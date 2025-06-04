@@ -25,7 +25,7 @@ export async function middleware(req: NextRequest) {
     const roles = Array.isArray(token.role) ? token.role : [];
     if (!roles.includes("admin")) {
       const url = req.nextUrl.clone();
-      url.pathname = "/dashboard"; // Yetki yoksa ana dashboard'a yönlendir
+      url.pathname = "/dashboard/unauthorized"; // Yetki yoksa ana unauthorized'a yönlendir
       return NextResponse.redirect(url);
     }
   }
