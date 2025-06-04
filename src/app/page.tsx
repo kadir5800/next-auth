@@ -1,22 +1,15 @@
-import { getServerSession, Session } from "next-auth";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import LoginPage from "./login/page";
-import HomePage from "./home/page";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const session = await getServerSession(authOptions) as Session | null;
+  const session = await getServerSession(authOptions);
 
-  return (
-    <div className="min-h-screen">
-      {!session ? (
-        <>
-          <LoginPage />
-        </>
-      ) : (
-        <>
-          <HomePage />
-        </>
-      )}
-    </div>
-  );
+  if (!session) {
+    return <LoginPage />;
+  }
+
+  // Eğer oturum varsa direkt dashboard'a yönlendir
+  redirect("/dashboard");
 }
