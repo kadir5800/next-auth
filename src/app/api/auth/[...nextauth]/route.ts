@@ -1,7 +1,8 @@
 import NextAuth from "next-auth";
 import Auth0Provider from "next-auth/providers/auth0";
+import type { NextAuthOptions } from "next-auth";
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     Auth0Provider({
       clientId: process.env.AUTH0_CLIENT_ID!,
@@ -16,7 +17,7 @@ const handler = NextAuth({
         const decoded: any = JSON.parse(
           Buffer.from(account.id_token.split('.')[1], 'base64').toString()
         );
-        const namespace = "https://nexxxt.com"; // action'da kullandığın namespace
+        const namespace = "https://nexxxt.com";
         token.role = decoded[`${namespace}/roles`] as string[] || [];
       }
       return token;
@@ -26,8 +27,9 @@ const handler = NextAuth({
       return session;
     },
   },
-});
+};
 
-console.log(process.env.AUTH0_CLIENT_ID);
+// Burada NextAuth'a config objesini verip handler yaratıyoruz
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

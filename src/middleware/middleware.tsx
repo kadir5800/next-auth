@@ -9,6 +9,6 @@ export default withAuth({
 
 export const config = {
   matcher: [
-    "/protected/:path*", // Korumak istediğin route'ları buraya yaz
+    "/((?!login).*)", // Korumak istediğin route'ları buraya yaz
   ],
 };
